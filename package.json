@@ -1,9 +1,11 @@
 {
   "name": "megaplan-react",
   "version": "0.1.0",
-  "main": "index.js",
+  "main": "dist/bundle.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack --watch | webpack-dev-server --hot"
   },
   "author": "",
   "license": "ISC",
@@ -19,15 +21,14 @@
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2",
-    "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.15.1"
+    "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
-    "awesome-typescript-loader": "^5.0.0",
+    "awesome-typescript-loader": "^3.1.2",
     "source-map-loader": "^0.2.3",
     "typescript": "^2.8.1",
-    "@types/jest": "^22.2.3",
-    "@types/node": "^9.6.5"
+    "webpack": "^2.7.0",
+    "webpack-dev-server": "^2.11.2",
+    "tslint": "^5.0.0"
   }
 }
