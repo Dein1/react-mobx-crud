@@ -26,4 +26,17 @@ export default class UsersStore {
   public addUser(user: User) {
     this.users.push(user);
   }
+
+  public editUser(guid: string, firstName: string, lastName: string, age: number) {
+    const userToEdit = this.users.find(el => el.guid === guid);
+    const index = this.users.indexOf(userToEdit);
+    this.users[index].name.first = firstName;
+    this.users[index].name.last = lastName;
+    this.users[index].age = age;
+  }
+
+  public findUser(index: number) {
+    const user = this.users[index - 1];
+    return user;
+  }
 }

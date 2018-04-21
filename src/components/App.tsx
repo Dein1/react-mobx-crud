@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 import UserForm from './UserForm';
 import UsersList from './UsersList';
 import Button from 'material-ui/Button';
@@ -13,19 +13,26 @@ export default class App extends React.Component<UsersProps, {}> {
   render() {
     const myLink = (props: any) => <Link to="/" {...props} />;
     return (
-      <BrowserRouter>
         <div>
           <Switch>
             <Route exact path="/" render={() => (<UsersList store={this.props.store}/>)}/>
-            <Route path="/edit" render={() => (<UserForm store={this.props.store}/>)} />
-            <Route path="/new" render={() => (<UserForm store={this.props.store}/>)} />
+            <Route 
+              path="/edit/:number"
+              render={props => (<UserForm { ...props } 
+              store={this.props.store} 
+              isEditing={true}/>)} />
+            <Route 
+              path="/new" 
+              render={props => (<UserForm {...props} 
+              store={this.props.store} 
+              isEditing={false}
+              match={{}}/>)} />
           </Switch>
           <br />
           <Button variant="raised" color="primary" component={myLink}>
             home
           </Button>
         </div>
-      </BrowserRouter>
     );
   }
 }

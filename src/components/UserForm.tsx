@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { observer } from 'mobx-react';
-import { FormState, FieldState } from 'formstate';
 import UsersStore  from './UsersStore';
 import { Guid } from 'guid-typescript';
 import Button from 'material-ui/Button';
@@ -8,79 +6,98 @@ import TextField from 'material-ui/TextField';
 import { Link } from 'react-router-dom';
 
 
-class UserState {
-  required = (val:string) => !val && 'All values required';
-  form = new FormState({
-    firstName: new FieldState('').validators(this.required),
-    lastName: new FieldState('').validators(this.required),
-    age: new FieldState(1),
-  });
-
-  onSubmit = async () => {
-    const res = await this.form.validate();
-    if (res.hasError) {
-      console.log(this.form.error);
-      return res;
-    }
-    console.log('hooray!');
-    return res;
-  }
-}
-
 interface UsersProps {
   store: UsersStore;
+  match: any;
+  isEditing: boolean;
 }
 
-@observer
-export default class UserForm extends React.Component<UsersProps, {}> {
-  data = new UserState();
+export default class UserForm extends React.Component<UsersProps, any> {
+  constructor(props: UsersProps) {
+    super(props);
+    if (props.isEditing) {
+      const user = props.store.findUser(props.match.params.number);
+      this.state = {
+        firstName: user.name.first,
+        lastName: user.name.last,
+        age: user.age,
+        guid: user.guid,
+      };
+      return;
+    }
+    this.state = {
+      firstName: '',
+      lastName: '',
+      age: 18,
+      guid: '',
+    };
+  }
+
+  handleFirstNameChange = (evt: any) => {
+    this.setState({ firstName: evt.target.value });
+  }
+
+  handleLastNameChange = (evt: any) => {
+    this.setState({ lastName: evt.target.value });
+  }
+
+  handleAgeChange = (evt: any) => {
+    this.setState({ age: evt.target.value });
+  }
+
+  handleSubmit = () => {
+    const { firstName, lastName } = this.state;
+    console.log(firstName, lastName);
+  }
   
-  addUser() {
-    const id = Guid.raw();
-    const res = this.data.onSubmit();
-    res.then((res) => {
-      if (!res.hasError) {
-        this.props.store.addUser({
-          guid: id,
-          age:  this.data.form.$.age.$,
-          name: {
-            first: this.data.form.$.firstName.$,
-            last: this.data.form.$.lastName.$,
-          },
-          email: 'string',
-        });
-      }
-    });
+  saveUser() {
+    if (!this.props.isEditing) {
+      const id = Guid.raw();
+      this.props.store.addUser({
+        guid: id,
+        age: this.state.age,
+        name: {
+          first: this.state.firstName,
+          last: this.state.lastName,
+        },
+        email: 'email',
+      });
+      return;
+    }
+    this.props.store.editUser(
+      this.state.guid, 
+      this.state.firstName, 
+      this.state.lastName, 
+      this.state.age);
   }
 
   render() {
-    const data = this.data;
-
-    const myLink = (props: any) => !this.data.form.error ?
-    <Link to="/" onClick={ e => e.preventDefault() } {...props}/>
-      : <Link to="/" {...props} />;
+    const { firstName, lastName, age } = this.state;
+    const isEnabled =
+      firstName.length > 0 &&
+      lastName.length > 0;
+    const myLink = (props: any) => <Link to="/" onClick={ e => e.preventDefault() } {...props}/>;
 
     return (<div><form>
       <TextField 
         id="firstname" 
         type="text"
         label="First name"
-        value={data.form.$.firstName.value}
-        onChange={e => data.form.$.firstName.onChange(e.target.value)}/>
+        value={firstName}
+        onChange={this.handleFirstNameChange}/>
       <br /><br />
       <TextField 
         id="lastname" 
         type="text"
         label="Last name"
-        value={data.form.$.lastName.value}
-        onChange={e => data.form.$.lastName.onChange(e.target.value)}
-        error={data.form.$.lastName.hasError}/>
+        value={lastName}
+        onChange={this.handleLastNameChange}/>
       <br /><br />
       <TextField
         id="age"
         label="Age"
-        value={data.form.$.age.value}
-        onChange={e => data.form.$.age.onChange(Number(e.target.value))}
+        value={age}
+        onChange={this.handleAgeChange}
         type="number"
         InputLabelProps={{
           shrink: true,
@@ -91,9 +108,10 @@ export default class UserForm extends React.Component<UsersProps, {}> {
     <Button 
       variant="raised"
       color="primary" 
-      onClick={() => this.addUser()}
-      component={myLink}>
-      add
+      disabled={!isEnabled}
+      component={myLink}
+      onClick={() => this.saveUser()}>
+        save
     </Button>
   </form>
   </div>);

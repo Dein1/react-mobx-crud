@@ -36,7 +36,7 @@ export default class UsersList extends React.Component<UsersProps, {}> {
                   <TableCell>{el.name.last}</TableCell>
                   <TableCell>{el.age}</TableCell>
                   <TableCell>
-                    <Link to="/edit">Edit</Link><a> </a>
+                    <Link to={`/edit/${index + 1}`} >Edit</Link><a> </a>
                     <a 
                       href="#" 
                       onClick={() => this.props.store.deleteUser(el.guid)}>Delete
