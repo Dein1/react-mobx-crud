@@ -1,26 +1,20 @@
 import * as React from 'react';
+import { observer } from 'mobx-react';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
-import { Link } from "react-router-dom";
+import Button from 'material-ui/Button';
+import { Link } from 'react-router-dom';
 import UsersStore  from './UsersStore';
 
 interface UsersProps {
-  store: UsersStore
+  store: UsersStore;
 }
 
-interface User {
-  guid: string;
-  age: number;
-  name: {
-    first: string,
-    last: string,
-  };
-  email: string;
-}
-
+@observer
 export default class UsersList extends React.Component<UsersProps, {}> {
   render() {
-    const users: User[] = this.props.store.users;  
+    const store = this.props.store;  
+    const myLink = (props: any) => <Link to="/new" {...props} />;
     return (
       <div style={{ width: '70%' }}>
         <Paper>
@@ -35,21 +29,28 @@ export default class UsersList extends React.Component<UsersProps, {}> {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map((el: any, index: number) => {
+              {store.users.map((el: any, index: number) => {
                 return (<TableRow key={el.guid}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{el.name.first}</TableCell>
                   <TableCell>{el.name.last}</TableCell>
                   <TableCell>{el.age}</TableCell>
                   <TableCell>
-                    <Link to='/edit'>Edit</Link><a> </a>
-                    <a href="#" onClick={() => this.props.store.deleteUser(el.guid)}>Delete</a>
+                    <Link to="/edit">Edit</Link><a> </a>
+                    <a 
+                      href="#" 
+                      onClick={() => this.props.store.deleteUser(el.guid)}>Delete
+                    </a>
                   </TableCell>
                 </TableRow>);
-                })}
+              })}
             </TableBody>
           </Table>
-        </Paper>
+          </Paper>
+          <br />
+          <Button variant="raised" color="primary" component={myLink}>
+            new user
+          </Button>
       </div>
     );
   }
