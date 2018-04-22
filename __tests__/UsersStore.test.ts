@@ -14,7 +14,7 @@ describe('UsersStore', () => {
   };
 
   const testUser2 = {
-    guid: 'guid1', 
+    guid: 'guid2', 
     age: 18,
     name: {
       first: 'first',
@@ -43,17 +43,29 @@ describe('UsersStore', () => {
 
   const store = new UsersStore(storeData);
 
-  it('add new users', () => {
+  it('create new users', () => {
+    expect(store.users.length).toBe(2);
     store.addUser(testUser1);
     expect(store.users.length).toBe(3);
+    expect(store.users[2].guid).toBe(testUser1.guid);
     store.addUser(testUser2);
     expect(store.users.length).toBe(4);
   });
 
-  it('delete user', () => {
+  it('delete users', () => {
+    expect(store.users.length).toBe(4);
     store.deleteUser('guid1');
     expect(store.users.length).toBe(3);
     store.deleteUser('guid2');
     expect(store.users.length).toBe(2);
+  });
+
+  it('edit user', () => {
+    store.addUser(testUser1);
+    store.editUser('guid1', 'TestFirstName', 'TestLastName', 75);
+    expect(store.users[2].name.first).toBe('TestFirstName');
+    expect(store.users[2].name.last).toBe('TestLastName');
+    expect(store.users[2].age).toBe(75);
+    expect(store.users.length).toBe(3);
   });
 });
