@@ -35,8 +35,8 @@ export default class UsersStore {
     this.users[index].age = age;
   }
 
-  public findUser(index: number) {
-    const user = this.users[index - 1];
+  public findUser(position: number) {
+    const user = this.users[position - 1];
     return user;
   }
 }

@@ -1,9 +1,17 @@
 import UsersStore from '../src/components/UsersStore';
-import * as TestUtils from 'react-dom/test-utils';
 
+interface User {
+  guid: string;
+  age: number;
+  name: {
+    first: string,
+    last: string,
+  };
+  email: string;
+}
 
 describe('UsersStore', () => {
-  const testUser1 = {
+  const testUser1: User = {
     guid: 'guid1', 
     age: 18,
     name: {
@@ -13,7 +21,7 @@ describe('UsersStore', () => {
     email: 'email',
   };
 
-  const testUser2 = {
+  const testUser2: User = {
     guid: 'guid2', 
     age: 18,
     name: {
@@ -23,7 +31,7 @@ describe('UsersStore', () => {
     email: 'email',
   };
 
-  const storeData = [{
+  const storeData: User[] = [{
     guid: '10e49a2b-0910-49a4-94aa-f29311fd0f79',
     age: 37,
     name: {
@@ -62,10 +70,16 @@ describe('UsersStore', () => {
 
   it('edit user', () => {
     store.addUser(testUser1);
+    expect(store.users.length).toBe(3);
     store.editUser('guid1', 'TestFirstName', 'TestLastName', 75);
     expect(store.users[2].name.first).toBe('TestFirstName');
     expect(store.users[2].name.last).toBe('TestLastName');
     expect(store.users[2].age).toBe(75);
     expect(store.users.length).toBe(3);
+  });
+
+  it('finds user', () => {
+    const user = store.findUser(3);
+    expect(user.name.first).toBe('TestFirstName');
   });
 });
