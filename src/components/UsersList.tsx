@@ -6,12 +6,12 @@ import Button from 'material-ui/Button';
 import { Link } from 'react-router-dom';
 import UsersStore  from './UsersStore';
 
-interface UsersProps {
+interface UsersListProps {
   store: UsersStore;
 }
 
 @observer
-export default class UsersList extends React.Component<UsersProps, {}> {
+export default class UsersList extends React.Component<UsersListProps, {}> {
   render() {
     const store = this.props.store;  
     const myLink = (props: any) => <Link to="/new" {...props} />;

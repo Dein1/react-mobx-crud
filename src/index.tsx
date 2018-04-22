@@ -6,11 +6,11 @@ import UsersStore from './components/UsersStore';
 import parse from './parse';
 
 declare global {
-  interface Window { store: any; }
+  interface Window { db: UsersStore; }
 }
 
 const data = parse('mates.json');
-const store = window.store = new UsersStore(data);
+const store = window.db = new UsersStore(data);
 
 ReactDOM.render(
   <BrowserRouter>
