@@ -31,7 +31,7 @@ export default class App extends React.Component<AppProps, {}> {
                 (<UserForm {...props}
                   store={store} 
                   isEditing={false}
-                  match={{}}/>)} />
+                  match={null} />)} />
           </Switch>
           <br />
           <Button variant="raised" color="primary" component={myLink} >

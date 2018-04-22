@@ -12,7 +12,14 @@ interface UserFormProps {
   isEditing: boolean;
 }
 
-export default class UserForm extends React.Component<UserFormProps, any> {
+interface FormState {
+  firstName: string;
+  lastName: string;
+  age: number;
+  guid: string;
+}
+
+export default class UserForm extends React.Component<UserFormProps, FormState> {
   
   constructor(props: UserFormProps) {
     super(props);
@@ -39,66 +46,63 @@ export default class UserForm extends React.Component<UserFormProps, any> {
   private handleAgeChange = (field: any) => this.setState({ age: field.target.value });
 
   private save() {
-    if (this.props.isEditing) {
+    this.props.isEditing ?
       this.props.store.editUser(
         this.state.guid, 
         this.state.firstName, 
         this.state.lastName, 
-        this.state.age);
-      return;
-    }
-    const id = Guid.raw();
-    this.props.store.addUser({
-      guid: id,
-      age: this.state.age,
-      name: {
-        first: this.state.firstName,
-        last: this.state.lastName,
-      },
-      email: 'email',
-    });
+        this.state.age) :
+      this.props.store.addUser({
+        guid: Guid.raw(),
+        age: this.state.age,
+        name: {
+          first: this.state.firstName,
+          last: this.state.lastName,
+        },
+        email: 'email',
+      });
   }
 
   render() {
     const { firstName, lastName, age } = this.state;
-    const isEnabled = firstName.length > 0 && lastName.length > 0;
+    const isEnabled = firstName.length > 0 && lastName.length > 0 && (age < 120 && age > 0);
     const myLink = (props: any) => <Link to="/" {...props}/>;
     
     return (
-      <div><form>
-        <TextField 
-          id="firstname" 
-          type="text"
-          label="First name"
-          required={true}
-          value={firstName}
-          onChange={this.handleFirstNameChange}/>
+      <div>
+        <form>
+          <TextField 
+            id="firstname" 
+            type="text"
+            label="First name"
+            value={firstName}
+            onChange={this.handleFirstNameChange}/>
+          <br /><br />
+          <TextField 
+            id="lastname" 
+            type="text"
+            label="Last name"
+            value={lastName}
+            onChange={this.handleLastNameChange}/>
+          <br /><br />
+          <TextField
+            id="age"
+            type="number"
+            label="Age"
+            inputProps={{ min: '1', max: '120', step: '1' }}
+            value={age}
+            onChange={this.handleAgeChange}
+          />
         <br /><br />
-        <TextField 
-          id="lastname" 
-          type="text"
-          label="Last name"
-          required={true}
-          value={lastName}
-          onChange={this.handleLastNameChange}/>
-        <br /><br />
-        <TextField
-          id="age"
-          type="number"
-          label="Age"
-          value={age}
-          onChange={this.handleAgeChange}
-        />
-      <br /><br />
-      <Button 
-        variant="raised"
-        color="primary" 
-        disabled={!isEnabled}
-        component={myLink}
-        onClick={() => this.save()}>
-          save
-      </Button>
-    </form>
+        <Button 
+          variant="raised"
+          color="primary" 
+          disabled={!isEnabled}
+          component={myLink}
+          onClick={() => this.save()}>
+            save
+        </Button>
+      </form>
     </div>);
   }
 }

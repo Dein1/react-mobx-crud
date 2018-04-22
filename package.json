@@ -2,37 +2,49 @@
   "name": "megaplan-react",
   "version": "0.1.0",
   "main": "dist/bundle.js",
+  "description": "Megaplan test assignment",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "webpack",
     "start": "webpack --watch | webpack-dev-server --hot"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "/__tests__/.*\\.(ts|tsx|js)$"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/history": "^4.6.2",
     "@types/react": "^16.3.11",
     "@types/react-dom": "^16.0.5",
     "@types/react-router": "^4.0.23",
     "@types/react-router-dom": "^4.2.6",
-    "formstate": "^1.0.1",
     "guid-typescript": "^1.0.7",
     "material-ui": "^1.0.0-beta.42",
     "mobx": "^4.2.0",
     "mobx-react": "^5.0.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
-    "react-material-ui-form-validator": "^1.1.4",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
+    "@types/jasmine": "^2.8.6",
     "awesome-typescript-loader": "^3.1.2",
     "source-map-loader": "^0.2.3",
+    "ts-jest": "^22.4.4",
+    "jest": "^22.4.0",
+    "tslint": "^5.0.0",
+    "tslint-config-airbnb": "^5.8.0",
     "typescript": "^2.8.1",
     "webpack": "^2.7.0",
-    "webpack-dev-server": "^2.11.2",
-    "tslint": "^5.0.0",
-    "tslint-config-airbnb": "^5.8.0"
+    "webpack-dev-server": "^2.11.2"
   }
 }

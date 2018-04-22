@@ -8,9 +8,11 @@
       "jsx": "react",
       "experimentalDecorators": true,
       "noUnusedLocals": true,
-      "noUnusedParameters": true
+      "noUnusedParameters": true,
+      "types": ["jasmine", "node"],
   },
   "include": [
-      "./src/**/*"
+      "./src/**/*",
+      "node_modules/@types"
   ]
 }
