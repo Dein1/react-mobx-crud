@@ -16,31 +16,37 @@ export default class UsersList extends React.Component<UsersListProps, {}> {
     const store = this.props.store;  
     
     const tableHead = 
-      (<TableHead>
-          <TableRow>
-            <TableCell>#</TableCell>
-            <TableCell>First Name</TableCell>
-            <TableCell>Last Name</TableCell>
-            <TableCell>Age</TableCell>
-            <TableCell>Actions</TableCell>
-          </TableRow>
-        </TableHead>);
+      (
+      <TableHead>
+        <TableRow>
+          <TableCell>#</TableCell>
+          <TableCell>First Name</TableCell>
+          <TableCell>Last Name</TableCell>
+          <TableCell>Age</TableCell>
+          <TableCell>Actions</TableCell>
+        </TableRow>
+      </TableHead>
+      );
 
     const tableBody = 
-      (<TableBody>
+      (
+      <TableBody>
         {store.users.map((el: any, index: number) => {
-          return (<TableRow key={el.guid}>
+          return (
+          <TableRow key={el.guid}>
             <TableCell>{index + 1}</TableCell>
             <TableCell>{el.name.first}</TableCell>
             <TableCell>{el.name.last}</TableCell>
             <TableCell>{el.age}</TableCell>
             <TableCell>
-              <Link to={`/edit/${index + 1}`} >Edit</Link><a> </a>
-              <Link to="#" onClick={() => this.props.store.deleteUser(el.guid)}>Delete</Link>
+              <Link to={`/edit/${index + 1}`} >Edit</Link><a />
+              <Link to="#" onClick={() => store.deleteUser(el.guid)}>Delete</Link>
             </TableCell>
-          </TableRow>);
+          </TableRow>
+          );
         })}
-      </TableBody>);
+      </TableBody>
+      );
 
     const newUserLink = (props: any) => <Link to="/new" {...props} />;
 

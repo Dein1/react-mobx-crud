@@ -18,18 +18,20 @@ export default class App extends React.Component<AppProps, {}> {
         <div>
           <Switch>
             <Route 
-              exact path="/" 
+              exact={true}
+              path="/"
               render={() => (<UsersList store={store}/>)} />
             <Route 
               path="/edit/:number"
-              render={props => 
-                (<UserForm {...props} 
+              render={props => (
+                <UserForm {...props} 
                   store={store} 
-                  isEditing={true} />)} />
+                  isEditing={true} />
+                  )} />
             <Route 
               path="/new" 
-              render={props => 
-                (<UserForm {...props}
+              render={props => (
+                <UserForm {...props}
                   store={store} 
                   isEditing={false}
                   match={null} />)} />
