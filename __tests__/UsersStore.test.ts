@@ -55,7 +55,7 @@ describe('UsersStore', () => {
     expect(store.users.length).toBe(2);
     store.addUser(testUser1);
     expect(store.users.length).toBe(3);
-    expect(store.users[2].guid).toBe(testUser1.guid);
+    expect(store.users[store.users.length - 1]).toEqual(testUser1);
     store.addUser(testUser2);
     expect(store.users.length).toBe(4);
   });
@@ -72,9 +72,10 @@ describe('UsersStore', () => {
     store.addUser(testUser1);
     expect(store.users.length).toBe(3);
     store.editUser('guid1', 'TestFirstName', 'TestLastName', 75);
-    expect(store.users[2].name.first).toBe('TestFirstName');
-    expect(store.users[2].name.last).toBe('TestLastName');
-    expect(store.users[2].age).toBe(75);
+    const last = store.users.length - 1;
+    expect(store.users[last].name.first).toBe('TestFirstName');
+    expect(store.users[last].name.last).toBe('TestLastName');
+    expect(store.users[last].age).toBe(75);
     expect(store.users.length).toBe(3);
   });
 

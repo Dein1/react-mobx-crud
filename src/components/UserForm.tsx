@@ -63,7 +63,8 @@ export default class UserForm extends React.Component<UserFormProps, FormState> 
     const { firstName, lastName, age } = this.state;
     const isButtonEnabled = firstName.length > 0 && lastName.length > 0 && (age < 121 && age > 0);
     const rootLink = (props: any) => <Link to="/" {...props}/>;
-    
+    const save = () => this.save();
+
     return (
       <div>
         <form>
@@ -95,7 +96,7 @@ export default class UserForm extends React.Component<UserFormProps, FormState> 
           color="primary" 
           disabled={!isButtonEnabled}
           component={rootLink}
-          onClick={() => this.save()}>
+          onClick={save}>
             save
         </Button>
       </form>

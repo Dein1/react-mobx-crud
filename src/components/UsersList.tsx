@@ -13,10 +13,9 @@ interface UsersListProps {
 @observer
 export default class UsersList extends React.Component<UsersListProps, {}> {
   render() {
-    const store = this.props.store;  
+    const store = this.props.store;
     
-    const tableHead = 
-      (
+    const tableHead = (
       <TableHead>
         <TableRow>
           <TableCell>#</TableCell>
@@ -27,26 +26,23 @@ export default class UsersList extends React.Component<UsersListProps, {}> {
         </TableRow>
       </TableHead>
       );
-
-    const tableBody = 
-      (
-      <TableBody>
-        {store.users.map((el: any, index: number) => {
-          return (
+    
+    const tableBodyContent = store.users.map((el: any, index: number) => {
+      const deleteUser = () => store.deleteUser(el.guid);
+      return (
           <TableRow key={el.guid}>
             <TableCell>{index + 1}</TableCell>
             <TableCell>{el.name.first}</TableCell>
             <TableCell>{el.name.last}</TableCell>
             <TableCell>{el.age}</TableCell>
             <TableCell>
-              <Link to={`/edit/${index + 1}`} >Edit</Link><a />
-              <Link to="#" onClick={() => store.deleteUser(el.guid)}>Delete</Link>
+              <Link to={`/edit/${index + 1}`} >Edit</Link>
+              {' '}
+              <Link to="#" onClick={deleteUser}>Delete</Link>
             </TableCell>
           </TableRow>
-          );
-        })}
-      </TableBody>
       );
+    });
 
     const newUserLink = (props: any) => <Link to="/new" {...props} />;
 
@@ -55,7 +51,9 @@ export default class UsersList extends React.Component<UsersListProps, {}> {
         <Paper>
           <Table>
             {tableHead}
-            {tableBody}
+            <TableBody>
+              {tableBodyContent}
+            </TableBody>
           </Table>
         </Paper>
         <br />
