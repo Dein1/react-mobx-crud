@@ -47,8 +47,8 @@ export default class UsersList extends React.Component<UsersListProps, {}> {
     const newUserLink = (props: any) => <Link to="/new" {...props} />;
 
     return (
-      <div style={{ width: '70%' }}>
-        <Paper>
+      <div className="table">
+        <Paper className="paper">
           <Table>
             {tableHead}
             <TableBody>

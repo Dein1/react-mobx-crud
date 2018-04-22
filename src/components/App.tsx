@@ -14,12 +14,13 @@ export default class App extends React.Component<AppProps, {}> {
     const store = this.props.store;
     const rootLink = (props: any) => <Link to="/" {...props} />;
     const createUsersList = () => <UsersList store={store}/>;
-    const createEditForm = (props: any) => <UserForm {...props} store={store} isEditing={true} />;
+    const createEditForm = (props: any) => 
+      <UserForm {...props} store={store} isEditing={true} />;
     const createNewForm = (props: any) => 
       <UserForm {...props} store={store} isEditing={false} match={null} />;
 
     return (
-        <div>
+        <div className="app">
           <Switch>
             <Route 
               exact={true}
