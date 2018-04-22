@@ -12,7 +12,8 @@ interface AppProps {
 export default class App extends React.Component<AppProps, {}> {
   render() {
     const store = this.props.store;
-    const myLink = (props: any) => <Link to="/" {...props} />;
+    const rootLink = (props: any) => <Link to="/" {...props} />;
+    
     return (
         <div>
           <Switch>
@@ -34,7 +35,7 @@ export default class App extends React.Component<AppProps, {}> {
                   match={null} />)} />
           </Switch>
           <br />
-          <Button variant="raised" color="primary" component={myLink} >
+          <Button variant="raised" color="primary" component={rootLink} >
             home
           </Button>
         </div>

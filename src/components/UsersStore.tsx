@@ -1,4 +1,4 @@
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
 
 interface User {
   guid: string;
@@ -17,17 +17,17 @@ export default class UsersStore {
     this.users = users;
   }
 
-  public deleteUser(guid: string) {
+  @action public deleteUser(guid: string) {
     const userToDelete = this.users.find(el => el.guid === guid);
     const index = this.users.indexOf(userToDelete);
     this.users.splice(index, 1);
   }
 
-  public addUser(user: User) {
+  @action public addUser(user: User) {
     this.users.push(user);
   }
 
-  public editUser(guid: string, firstName: string, lastName: string, age: number) {
+  @action public editUser(guid: string, firstName: string, lastName: string, age: number) {
     const userToEdit = this.users.find(el => el.guid === guid);
     const index = this.users.indexOf(userToEdit);
     this.users[index].name.first = firstName;

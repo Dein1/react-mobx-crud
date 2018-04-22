@@ -5,7 +5,6 @@ import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import { Link } from 'react-router-dom';
 
-
 interface UserFormProps {
   store: UsersStore;
   match: any;
@@ -46,27 +45,24 @@ export default class UserForm extends React.Component<UserFormProps, FormState> 
   private handleAgeChange = (field: any) => this.setState({ age: field.target.value });
 
   private save() {
-    this.props.isEditing ?
-      this.props.store.editUser(
-        this.state.guid, 
-        this.state.firstName, 
-        this.state.lastName, 
-        this.state.age) :
-      this.props.store.addUser({
-        guid: Guid.raw(),
-        age: this.state.age,
-        name: {
-          first: this.state.firstName,
-          last: this.state.lastName,
-        },
-        email: 'email',
-      });
+    const { firstName, lastName, age, guid } = this.state;
+    this.props.isEditing 
+    ? this.props.store.editUser(guid, firstName, lastName, age) 
+    : this.props.store.addUser({
+      age,
+      guid: Guid.raw(),
+      name: {
+        first: firstName,
+        last: lastName,
+      },
+      email: 'email',
+    });
   }
 
   render() {
     const { firstName, lastName, age } = this.state;
-    const isEnabled = firstName.length > 0 && lastName.length > 0 && (age < 120 && age > 0);
-    const myLink = (props: any) => <Link to="/" {...props}/>;
+    const isButtonEnabled = firstName.length > 0 && lastName.length > 0 && (age < 121 && age > 0);
+    const rootLink = (props: any) => <Link to="/" {...props}/>;
     
     return (
       <div>
@@ -97,8 +93,8 @@ export default class UserForm extends React.Component<UserFormProps, FormState> 
         <Button 
           variant="raised"
           color="primary" 
-          disabled={!isEnabled}
-          component={myLink}
+          disabled={!isButtonEnabled}
+          component={rootLink}
           onClick={() => this.save()}>
             save
         </Button>
