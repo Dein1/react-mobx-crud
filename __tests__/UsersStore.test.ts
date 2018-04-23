@@ -1,4 +1,4 @@
-import UsersStore from '../src/components/UsersStore';
+import UsersStore from '../src/stores/UsersStore';
 
 interface User {
   guid: string;
