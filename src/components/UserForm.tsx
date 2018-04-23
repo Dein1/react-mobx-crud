@@ -1,5 +1,5 @@
 import * as React from 'react';
-import UsersStore  from './UsersStore';
+import UsersStore  from '../stores/UsersStore';
 import { Guid } from 'guid-typescript';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';

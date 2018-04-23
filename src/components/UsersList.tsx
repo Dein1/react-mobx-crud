@@ -4,7 +4,7 @@ import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Ta
 import Paper from 'material-ui/Paper';
 import Button from 'material-ui/Button';
 import { Link } from 'react-router-dom';
-import UsersStore  from './UsersStore';
+import UsersStore  from '../stores/UsersStore';
 
 interface UsersListProps {
   store: UsersStore;
@@ -47,8 +47,8 @@ export default class UsersList extends React.Component<UsersListProps, {}> {
     const newUserLink = (props: any) => <Link to="/new" {...props} />;
 
     return (
-      <div className="table">
-        <Paper className="paper">
+      <div>
+        <Paper>
           <Table>
             {tableHead}
             <TableBody>

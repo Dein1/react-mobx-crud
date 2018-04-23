@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
-import UsersStore from './components/UsersStore';
+import UsersStore from './stores/UsersStore';
 import parse from './parse';
 
 declare global {

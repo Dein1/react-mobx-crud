@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import UserForm from './UserForm';
 import UsersList from './UsersList';
-import UsersStore from './UsersStore';
+import UsersStore from '../stores/UsersStore';
 import Button from 'material-ui/Button';
 
 interface AppProps {
