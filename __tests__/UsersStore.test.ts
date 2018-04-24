@@ -31,6 +31,16 @@ describe('UsersStore', () => {
     email: 'email',
   };
 
+  const testUser3: User = {
+    guid: 'guid2', 
+    age: 75,
+    name: {
+      first: 'TestFirstName',
+      last: 'TestLastName',
+    },
+    email: 'email',
+  };
+
   const storeData: User[] = [{
     guid: '10e49a2b-0910-49a4-94aa-f29311fd0f79',
     age: 37,
@@ -71,7 +81,7 @@ describe('UsersStore', () => {
   it('edit user', () => {
     store.addUser(testUser1);
     expect(store.users.length).toBe(3);
-    store.editUser('guid1', 'TestFirstName', 'TestLastName', 75);
+    store.editUser('guid1', testUser3);
     const last = store.users.length - 1;
     expect(store.users[last].name.first).toBe('TestFirstName');
     expect(store.users[last].name.last).toBe('TestLastName');

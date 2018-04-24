@@ -4,40 +4,40 @@ import UserForm from './UserForm';
 import UsersList from './UsersList';
 import UsersStore from '../stores/UsersStore';
 import Button from 'material-ui/Button';
+import { inject } from 'mobx-react';
 
 interface AppProps {
-  store: UsersStore;
+  store?: UsersStore;
 }
 
+@inject('store')
 export default class App extends React.Component<AppProps, {}> {
+    
+  private rootLink = (props: any) => <Link to="/" {...props} />;
+  private createEditForm = (props: any) => <UserForm {...props} isEditing={true} />;
+  private createNewForm = (props: any) => <UserForm {...props} isEditing={false} match={null} />;
+  
   render() {
-    const store = this.props.store;
-    const rootLink = (props: any) => <Link to="/" {...props} />;
-    const createUsersList = () => <UsersList store={store}/>;
-    const createEditForm = (props: any) => 
-      <UserForm {...props} store={store} isEditing={true} />;
-    const createNewForm = (props: any) => 
-      <UserForm {...props} store={store} isEditing={false} match={null} />;
-
+    console.log(this.props.store);
     return (
-        <div className="app">
-          <Switch>
-            <Route 
-              exact={true}
-              path="/"
-              render={createUsersList} />
-            <Route 
-              path="/edit/:number"
-              render={createEditForm} />
-            <Route 
-              path="/new"
-              render={createNewForm} />
-          </Switch>
-          <br />
-          <Button variant="raised" color="primary" component={rootLink} >
-            home
-          </Button>
-        </div>
+      <div className="app">
+        <Switch>
+          <Route 
+            exact={true}
+            path="/"
+            component={UsersList} />
+          <Route 
+            path="/edit/:number"
+            render={this.createEditForm} />
+          <Route 
+            path="/new"
+            render={this.createNewForm} />
+        </Switch>
+        <br />
+        <Button variant="raised" color="primary" component={this.rootLink} >
+          home
+        </Button>
+      </div>
     );
   }
 }

@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
 import UsersStore from './stores/UsersStore';
 import parse from './parse';
+import { Provider } from 'mobx-react';
 
 declare global {
   interface Window { db: UsersStore; }
@@ -13,8 +14,10 @@ const data = parse('mates.json');
 const store = window.db = new UsersStore(data);
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App store={store}/>
-  </BrowserRouter>,
+  <Provider store={store} >
+    <BrowserRouter>
+      <App/>
+    </BrowserRouter>
+  </Provider>,
   document.getElementById('root'),
 );

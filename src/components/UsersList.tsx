@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
 import Button from 'material-ui/Button';
@@ -7,11 +7,15 @@ import { Link } from 'react-router-dom';
 import UsersStore  from '../stores/UsersStore';
 
 interface UsersListProps {
-  store: UsersStore;
+  store?: UsersStore;
 }
 
 @observer
+@inject('store')
 export default class UsersList extends React.Component<UsersListProps, {}> {
+
+  private newUserLink = (props: any) => <Link to="/new" {...props} />;
+
   render() {
     const store = this.props.store;
     
@@ -44,8 +48,6 @@ export default class UsersList extends React.Component<UsersListProps, {}> {
       );
     });
 
-    const newUserLink = (props: any) => <Link to="/new" {...props} />;
-
     return (
       <div>
         <Paper>
@@ -57,7 +59,7 @@ export default class UsersList extends React.Component<UsersListProps, {}> {
           </Table>
         </Paper>
         <br />
-        <Button variant="raised" color="primary" component={newUserLink}>
+        <Button variant="raised" color="primary" component={this.newUserLink}>
           new user
         </Button>
       </div>

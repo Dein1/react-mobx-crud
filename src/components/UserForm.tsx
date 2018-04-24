@@ -4,9 +4,10 @@ import { Guid } from 'guid-typescript';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import { Link } from 'react-router-dom';
+import { inject } from 'mobx-react';
 
 interface UserFormProps {
-  store: UsersStore;
+  store?: UsersStore;
   match: any;
   isEditing: boolean;
 }
@@ -16,8 +17,10 @@ interface FormState {
   lastName: string;
   age: number;
   guid: string;
+  email: string;
 }
 
+@inject('store')
 export default class UserForm extends React.Component<UserFormProps, FormState> {
   
   constructor(props: UserFormProps) {
@@ -29,6 +32,7 @@ export default class UserForm extends React.Component<UserFormProps, FormState> 
         lastName: user.name.last,
         age: user.age,
         guid: user.guid,
+        email: user.email,
       };
       return;
     }
@@ -37,6 +41,7 @@ export default class UserForm extends React.Component<UserFormProps, FormState> 
       lastName: '',
       age: 18,
       guid: '',
+      email: '',
     };
   }
 
@@ -44,10 +49,22 @@ export default class UserForm extends React.Component<UserFormProps, FormState> 
   private handleLastNameChange = (field: any) => this.setState({ lastName: field.target.value });
   private handleAgeChange = (field: any) => this.setState({ age: field.target.value });
 
+  private isButtonEnabled = () => 
+    (this.state.firstName.length > 0)
+      && (this.state.lastName.length > 0) && (this.state.age < 121 && this.state.age > 0)
+
   private save() {
-    const { firstName, lastName, age, guid } = this.state;
+    const { firstName, lastName, age, guid, email } = this.state;
     this.props.isEditing 
-    ? this.props.store.editUser(guid, firstName, lastName, age) 
+    ? this.props.store.editUser(guid, {
+      age,
+      guid,
+      email,
+      name: {
+        first: firstName,
+        last: lastName,
+      },
+    }) 
     : this.props.store.addUser({
       age,
       guid: Guid.raw(),
@@ -59,11 +76,12 @@ export default class UserForm extends React.Component<UserFormProps, FormState> 
     });
   }
 
+  private formSave = () => this.save();
+
+  private rootLink = (props: any) => <Link to="/" {...props}/>;
+
   render() {
     const { firstName, lastName, age } = this.state;
-    const isButtonEnabled = firstName.length > 0 && lastName.length > 0 && (age < 121 && age > 0);
-    const rootLink = (props: any) => <Link to="/" {...props}/>;
-    const save = () => this.save();
 
     return (
       <div>
@@ -94,9 +112,9 @@ export default class UserForm extends React.Component<UserFormProps, FormState> 
         <Button 
           variant="raised"
           color="primary" 
-          disabled={!isButtonEnabled}
-          component={rootLink}
-          onClick={save}>
+          disabled={!this.isButtonEnabled()}
+          component={this.rootLink}
+          onClick={this.formSave}>
             save
         </Button>
       </form>
