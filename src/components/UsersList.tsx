@@ -10,35 +10,41 @@ interface UsersListProps {
   store?: UsersStore;
 }
 
-@observer
 @inject('store')
+@observer
 export default class UsersList extends React.Component<UsersListProps, {}> {
 
   private newUserLink = (props: any) => <Link to="/new" {...props} />;
+  private tableHead = (
+    <TableHead>
+      <TableRow>
+        <TableCell>#</TableCell>
+        <TableCell>First Name</TableCell>
+        <TableCell>Last Name</TableCell>
+        <TableCell>Age</TableCell>
+        <TableCell>Supervisor</TableCell>
+        <TableCell>Actions</TableCell>
+      </TableRow>
+    </TableHead>
+    );
 
   render() {
     const store = this.props.store;
     
-    const tableHead = (
-      <TableHead>
-        <TableRow>
-          <TableCell>#</TableCell>
-          <TableCell>First Name</TableCell>
-          <TableCell>Last Name</TableCell>
-          <TableCell>Age</TableCell>
-          <TableCell>Actions</TableCell>
-        </TableRow>
-      </TableHead>
-      );
-    
     const tableBodyContent = store.users.map((el: any, index: number) => {
       const deleteUser = () => store.deleteUser(el.guid);
+      const supervisor = el.supervisorGuid ? store.findUser(el.supervisorGuid) : 'none';
+
+      const supervisorToShow = 
+        supervisor === 'none' ? 'none' : `${supervisor.name.first} ${supervisor.name.last}`;
+
       return (
           <TableRow key={el.guid}>
             <TableCell>{index + 1}</TableCell>
             <TableCell>{el.name.first}</TableCell>
             <TableCell>{el.name.last}</TableCell>
             <TableCell>{el.age}</TableCell>
+            <TableCell>{supervisorToShow}</TableCell>
             <TableCell>
               <Link to={`/edit/${index + 1}`} >Edit</Link>
               {' '}
@@ -52,7 +58,7 @@ export default class UsersList extends React.Component<UsersListProps, {}> {
       <div>
         <Paper>
           <Table>
-            {tableHead}
+            {this.tableHead}
             <TableBody>
               {tableBodyContent}
             </TableBody>

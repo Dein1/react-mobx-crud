@@ -8,6 +8,7 @@ interface User {
     last: string,
   };
   email: string;
+  supervisorGuid: string;
 }
 
 export default class UsersStore {
@@ -21,6 +22,11 @@ export default class UsersStore {
     const userToDelete = this.users.find(el => el.guid === guid);
     const index = this.users.indexOf(userToDelete);
     this.users.splice(index, 1);
+    this.users.map((el) => {
+      if (el.supervisorGuid && el.supervisorGuid === guid) {
+        delete el.supervisorGuid;
+      }
+    });
   }
 
   @action public addUser(user: User) {
@@ -34,8 +40,13 @@ export default class UsersStore {
     this.users[index] = updatedUser;
   }
 
-  public findUser(position: number) {
+  public findByIndex(position: number) {
     const user = this.users[position - 1];
+    return user;
+  }
+  
+  public findUser(guid: string) {
+    const user = this.users.find(el => el.guid === guid);
     return user;
   }
 }

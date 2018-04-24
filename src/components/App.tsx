@@ -18,7 +18,6 @@ export default class App extends React.Component<AppProps, {}> {
   private createNewForm = (props: any) => <UserForm {...props} isEditing={false} match={null} />;
   
   render() {
-    console.log(this.props.store);
     return (
       <div className="app">
         <Switch>

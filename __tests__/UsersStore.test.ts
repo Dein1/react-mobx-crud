@@ -8,6 +8,7 @@ interface User {
     last: string,
   };
   email: string;
+  supervisorGuid: string;
 }
 
 describe('UsersStore', () => {
@@ -19,6 +20,7 @@ describe('UsersStore', () => {
       last: 'last',
     },
     email: 'email',
+    supervisorGuid: '',
   };
 
   const testUser2: User = {
@@ -29,6 +31,7 @@ describe('UsersStore', () => {
       last: 'last',
     },
     email: 'email',
+    supervisorGuid: '',
   };
 
   const testUser3: User = {
@@ -39,6 +42,7 @@ describe('UsersStore', () => {
       last: 'TestLastName',
     },
     email: 'email',
+    supervisorGuid: '',
   };
 
   const storeData: User[] = [{
@@ -49,6 +53,7 @@ describe('UsersStore', () => {
       last: 'Hatfield',
     },
     email: 'flowers.hatfield@undefined.us',
+    supervisorGuid: '',
   }, {
     guid: '69827b93-1b7a-4475-9b27-5caffdf5257e',
     age: 37,
@@ -57,6 +62,7 @@ describe('UsersStore', () => {
       last: 'Pope',
     },
     email: 'whitney.pope@undefined.net',
+    supervisorGuid: '',
   }];
 
   const store = new UsersStore(storeData);
@@ -87,10 +93,5 @@ describe('UsersStore', () => {
     expect(store.users[last].name.last).toBe('TestLastName');
     expect(store.users[last].age).toBe(75);
     expect(store.users.length).toBe(3);
-  });
-
-  it('finds user', () => {
-    const user = store.findUser(3);
-    expect(user.name.first).toBe('TestFirstName');
   });
 });
