@@ -31,10 +31,10 @@ export default class UsersList extends React.Component<UsersListProps, {}> {
 
   private generateTableContent = () => this.props.store.users.map((el: any, index: number) => {
     const deleteUser = () => this.props.store.deleteUser(el.guid);
-    const supervisor = el.supervisorGuid ? this.props.store.findUser(el.supervisorGuid) : 'none';
+    const supervisor = el.supervisorGuid ? this.props.store.findUser(el.supervisorGuid) : null;
     const supervisorToShow = 
-      supervisor === 'none' 
-      ? 'none' 
+      supervisor === null 
+      ? '' 
       : `${supervisor.name.first} ${supervisor.name.last}`;
 
     return (

@@ -104,24 +104,25 @@ export default class UserForm extends React.Component<UserFormProps, {}> {
           />
           <br /><br />
           <FormControl>
-          <Select
-            name="supervisor"
-            value={this.form.supervisor}
-            onChange={this.handleChange}>
-            {this.generateSupervisors()}
-          </Select>
+            <Select
+              name="supervisor"
+              value={this.form.supervisor}
+              onChange={this.handleChange}>
+              {this.generateSupervisors()}
+            </Select>
           </FormControl>
           <FormHelperText>Select supervisor</FormHelperText>
-        <br /><br />
-        <Button 
-          variant="raised"
-          color="primary" 
-          disabled={!this.form.isButtonEnabled()}
-          component={this.rootLink}
-          onClick={this.save}>
-            save
-        </Button>
-      </form>
-    </div>);
+          <br /><br />
+          <Button 
+            variant="raised"
+            color="primary" 
+            disabled={!this.form.isButtonEnabled()}
+            component={this.rootLink}
+            onClick={this.save}>
+              save
+          </Button>
+        </form>
+      </div>
+    );
   }
 }
