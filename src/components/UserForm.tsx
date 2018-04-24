@@ -7,7 +7,8 @@ import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import { FormHelperText, FormControl } from 'material-ui/Form';
 import { Link } from 'react-router-dom';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
+import FormStore from './FormStore';
 
 interface UserFormProps {
   store?: UsersStore;
@@ -15,72 +16,55 @@ interface UserFormProps {
   isEditing: boolean;
 }
 
-interface FormState {
-  firstName: string;
-  lastName: string;
-  age: number;
-  guid: string;
-  email: string;
-  supervisor: string;
-}
-
-
 @inject('store')
-export default class UserForm extends React.Component<UserFormProps, FormState> {
-  
+@observer
+export default class UserForm extends React.Component<UserFormProps, {}> {
+  public form: any;
   constructor(props: UserFormProps) {
     super(props);
-    if (props.isEditing) {
-      const user = props.store.findByPosition(props.match.params.number);
-      const supervisor = user.supervisorGuid ? user.supervisorGuid : '';
-      this.state = {
-        supervisor,
-        firstName: user.name.first,
-        lastName: user.name.last,
-        age: user.age,
-        guid: user.guid,
-        email: user.email,
-      };
-      return;
-    }
-    this.state = {
-      firstName: '',
-      lastName: '',
+    const blankUser = { guid: '',
       age: 18,
-      guid: '',
+      name: {
+        first: '',
+        last: '',
+      },
       email: '',
-      supervisor: '',
+      supervisorGuid: '',
     };
+    const user = this.props.isEditing 
+      ? this.props.store.findByPosition(this.props.match.params.number) 
+      : blankUser;
+    this.form = new FormStore(user);
   }
 
-  private handleChange = (event: any) => this.setState({ [event.target.name]: event.target.value });
+  private handleChange = (event: any) => this.form[event.target.name] = event.target.value;
 
   private isButtonEnabled = () => 
-    (this.state.firstName.length > 0)
-      && (this.state.lastName.length > 0) && (this.state.age < 121 && this.state.age > 0)
+    (this.form.firstName.length > 0)
+    && (this.form.lastName.length > 0) 
+    && (this.form.age < 121 && this.form.age > 0)
 
   private save() {
-    const { firstName, lastName, age, guid, email, supervisor } = this.state;
     this.props.isEditing 
-    ? this.props.store.editUser(guid, {
-      age,
-      guid,
-      email,
+    ? this.props.store.editUser({
+      age: this.form.age,
+      guid: this.form.user.guid,
+      email: this.form.user.email,
+      supervisorGuid: this.form.supervisor,
       name: {
-        first: firstName,
-        last: lastName,
+        first: this.form.firstName,
+        last: this.form.lastName,
       },
-      supervisorGuid: supervisor,
     }) 
     : this.props.store.addUser({
-      age,
+      age: this.form.age,
+      supervisorGuid: this.form.supervisor,
       guid: Guid.raw(),
       name: {
-        first: firstName,
-        last: lastName,
+        first: this.form.firstName,
+        last: this.form.lastName,
       },
       email: 'email',
-      supervisorGuid: supervisor,
     });
   }
 
@@ -90,14 +74,14 @@ export default class UserForm extends React.Component<UserFormProps, FormState> 
 
   render() {
     const supervisorsList = this.props.store.users.map((el) => {
-      if (this.props.isEditing && (this.state.guid === el.guid)) return;
+      if (this.props.isEditing && (this.form.user.guid === el.guid)) return;
       return (
         <MenuItem key={el.guid} value={el.guid}>
           {`${el.name.first} ${el.name.last}`}
         </MenuItem>
       );
     });
-
+    
     return (
       <div>
         <form>
@@ -105,14 +89,14 @@ export default class UserForm extends React.Component<UserFormProps, FormState> 
             name="firstName" 
             type="text"
             label="First name"
-            value={this.state.firstName}
+            value={this.form.firstName}
             onChange={this.handleChange}/>
           <br /><br />
           <TextField 
             name="lastName" 
             type="text"
             label="Last name"
-            value={this.state.lastName}
+            value={this.form.lastName}
             onChange={this.handleChange}/>
           <br /><br />
           <TextField
@@ -120,14 +104,14 @@ export default class UserForm extends React.Component<UserFormProps, FormState> 
             type="number"
             label="Age"
             inputProps={{ min: '1', max: '120', step: '1' }}
-            value={this.state.age}
+            value={this.form.age}
             onChange={this.handleChange}
           />
           <br /><br />
           <FormControl>
           <Select
             name="supervisor"
-            value={this.state.supervisor}
+            value={this.form.supervisor}
             onChange={this.handleChange}>
             {supervisorsList}
           </Select>

@@ -85,9 +85,9 @@ describe('UsersStore', () => {
   });
 
   it('edit user', () => {
-    store.addUser(testUser1);
+    store.addUser(testUser2);
     expect(store.users.length).toBe(3);
-    store.editUser('guid1', testUser3);
+    store.editUser(testUser3);
     const last = store.users.length - 1;
     expect(store.users[last].name.first).toBe('TestFirstName');
     expect(store.users[last].name.last).toBe('TestLastName');

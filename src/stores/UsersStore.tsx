@@ -8,7 +8,11 @@ interface User {
     last: string,
   };
   email: string;
-  supervisorGuid: string;
+  supervisorGuid?: string;
+  new1?: any;
+  new2?: any;
+  new3?: any;
+  new4?: any;
 }
 
 export default class UsersStore {
@@ -33,8 +37,8 @@ export default class UsersStore {
     this.users.push(user);
   }
 
-  @action public editUser(guid: string, editedUser: User) {
-    const userToEdit = this.users.find(el => el.guid === guid);
+  @action public editUser(editedUser: User) {
+    const userToEdit = this.users.find(el => el.guid === editedUser.guid);
     const index = this.users.indexOf(userToEdit);
     const updatedUser = { ...userToEdit, ...editedUser };
     this.users[index] = updatedUser;
