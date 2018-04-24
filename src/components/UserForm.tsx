@@ -72,6 +72,11 @@ export default class UserForm extends React.Component<UserFormProps, {}> {
     );
   })
 
+  public isButtonEnabled = () => 
+    (this.form.firstName.length > 0)
+    && (this.form.lastName.length > 0) 
+    && (this.form.age < 121 && this.form.age > 0)
+
   private rootLink = (props: any) => <Link to="/" {...props}/>;
 
   private handleChange = (event: any) => this.form[event.target.name] = event.target.value;
@@ -84,6 +89,7 @@ export default class UserForm extends React.Component<UserFormProps, {}> {
             name="firstName" 
             type="text"
             label="First name"
+            required={true}
             value={this.form.firstName}
             onChange={this.handleChange}/>
           <br /><br />
@@ -91,6 +97,7 @@ export default class UserForm extends React.Component<UserFormProps, {}> {
             name="lastName" 
             type="text"
             label="Last name"
+            required={true}
             value={this.form.lastName}
             onChange={this.handleChange}/>
           <br /><br />
@@ -98,6 +105,7 @@ export default class UserForm extends React.Component<UserFormProps, {}> {
             name="age"
             type="number"
             label="Age"
+            required={true}
             inputProps={{ min: '1', max: '120', step: '1' }}
             value={this.form.age}
             onChange={this.handleChange}
@@ -108,6 +116,9 @@ export default class UserForm extends React.Component<UserFormProps, {}> {
               name="supervisor"
               value={this.form.supervisor}
               onChange={this.handleChange}>
+              <MenuItem value="">
+                None
+              </MenuItem>
               {this.generateSupervisors()}
             </Select>
           </FormControl>
@@ -116,7 +127,7 @@ export default class UserForm extends React.Component<UserFormProps, {}> {
           <Button 
             variant="raised"
             color="primary" 
-            disabled={!this.form.isButtonEnabled()}
+            disabled={!this.isButtonEnabled()}
             component={this.rootLink}
             onClick={this.save}>
               save
