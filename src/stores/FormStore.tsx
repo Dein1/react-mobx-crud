@@ -9,7 +9,6 @@ interface User {
   };
   email: string;
   supervisorGuid?: string;
-  [key: string]: any;
 }
 
 export default class FormStore {
@@ -19,11 +18,16 @@ export default class FormStore {
   @observable public age: number;
   @observable public supervisor: string;
 
-  constructor(user: User) {
+  constructor(user?: User) {
     this.user = user;
     this.firstName = this.user.name.first;
     this.lastName = this.user.name.last;
     this.age = this.user.age;
-    this.supervisor = this.user.supervisorGuid ? this.user.supervisorGuid : '';
+    this.supervisor = this.user.supervisorGuid || '';
   }
+
+  public isButtonEnabled = () => 
+    (this.firstName.length > 0)
+    && (this.lastName.length > 0) 
+    && (this.age < 121 && this.age > 0)
 }

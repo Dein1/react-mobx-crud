@@ -8,7 +8,7 @@ import { MenuItem } from 'material-ui/Menu';
 import { FormHelperText, FormControl } from 'material-ui/Form';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import FormStore from './FormStore';
+import FormStore from '../stores/FormStore';
 
 interface UserFormProps {
   store?: UsersStore;
@@ -20,9 +20,11 @@ interface UserFormProps {
 @observer
 export default class UserForm extends React.Component<UserFormProps, {}> {
   public form: any;
+
   constructor(props: UserFormProps) {
     super(props);
-    const blankUser = { guid: '',
+    const blankUser = { 
+      guid: '',
       age: 18,
       name: {
         first: '',
@@ -37,14 +39,7 @@ export default class UserForm extends React.Component<UserFormProps, {}> {
     this.form = new FormStore(user);
   }
 
-  private handleChange = (event: any) => this.form[event.target.name] = event.target.value;
-
-  private isButtonEnabled = () => 
-    (this.form.firstName.length > 0)
-    && (this.form.lastName.length > 0) 
-    && (this.form.age < 121 && this.form.age > 0)
-
-  private save() {
+  private save = () => {
     this.props.isEditing 
     ? this.props.store.editUser({
       age: this.form.age,
@@ -68,20 +63,20 @@ export default class UserForm extends React.Component<UserFormProps, {}> {
     });
   }
 
-  private formSave = () => this.save();
+  private generateSupervisors = () => this.props.store.users.map((el) => {
+    if (this.props.isEditing && (this.form.user.guid === el.guid)) return;
+    return (
+      <MenuItem key={el.guid} value={el.guid}>
+        {`${el.name.first} ${el.name.last}`}
+      </MenuItem>
+    );
+  })
 
   private rootLink = (props: any) => <Link to="/" {...props}/>;
 
+  private handleChange = (event: any) => this.form[event.target.name] = event.target.value;
+
   render() {
-    const supervisorsList = this.props.store.users.map((el) => {
-      if (this.props.isEditing && (this.form.user.guid === el.guid)) return;
-      return (
-        <MenuItem key={el.guid} value={el.guid}>
-          {`${el.name.first} ${el.name.last}`}
-        </MenuItem>
-      );
-    });
-    
     return (
       <div>
         <form>
@@ -113,7 +108,7 @@ export default class UserForm extends React.Component<UserFormProps, {}> {
             name="supervisor"
             value={this.form.supervisor}
             onChange={this.handleChange}>
-            {supervisorsList}
+            {this.generateSupervisors()}
           </Select>
           </FormControl>
           <FormHelperText>Select supervisor</FormHelperText>
@@ -121,9 +116,9 @@ export default class UserForm extends React.Component<UserFormProps, {}> {
         <Button 
           variant="raised"
           color="primary" 
-          disabled={!this.isButtonEnabled()}
+          disabled={!this.form.isButtonEnabled()}
           component={this.rootLink}
-          onClick={this.formSave}>
+          onClick={this.save}>
             save
         </Button>
       </form>

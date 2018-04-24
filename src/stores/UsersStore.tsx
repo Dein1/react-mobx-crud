@@ -9,10 +9,6 @@ interface User {
   };
   email: string;
   supervisorGuid?: string;
-  new1?: any;
-  new2?: any;
-  new3?: any;
-  new4?: any;
 }
 
 export default class UsersStore {

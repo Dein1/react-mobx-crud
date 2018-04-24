@@ -17,21 +17,25 @@ export default class App extends React.Component<AppProps, {}> {
   private createEditForm = (props: any) => <UserForm {...props} isEditing={true} />;
   private createNewForm = (props: any) => <UserForm {...props} isEditing={false} match={null} />;
   
+  private router = (
+  <Switch>
+    <Route 
+      exact={true}
+      path="/"
+      component={UsersList} />
+    <Route 
+      path="/edit/:number"
+      render={this.createEditForm} />
+    <Route 
+      path="/new"
+      render={this.createNewForm} />
+  </Switch>
+  );
+
   render() {
     return (
       <div className="app">
-        <Switch>
-          <Route 
-            exact={true}
-            path="/"
-            component={UsersList} />
-          <Route 
-            path="/edit/:number"
-            render={this.createEditForm} />
-          <Route 
-            path="/new"
-            render={this.createNewForm} />
-        </Switch>
+        {this.router}
         <br />
         <Button variant="raised" color="primary" component={this.rootLink} >
           home
