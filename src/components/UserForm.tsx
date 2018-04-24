@@ -31,17 +31,15 @@ export default class UserForm extends React.Component<UserFormProps, FormState> 
   constructor(props: UserFormProps) {
     super(props);
     if (props.isEditing) {
-      const user = props.store.findByIndex(props.match.params.number);
-      const supervisor = user.supervisorGuid === '' 
-        ? props.store.findUser(user.supervisorGuid)
-        : { guid: '' };
+      const user = props.store.findByPosition(props.match.params.number);
+      const supervisor = user.supervisorGuid ? user.supervisorGuid : '';
       this.state = {
+        supervisor,
         firstName: user.name.first,
         lastName: user.name.last,
         age: user.age,
         guid: user.guid,
         email: user.email,
-        supervisor: supervisor.guid,
       };
       return;
     }
@@ -55,9 +53,7 @@ export default class UserForm extends React.Component<UserFormProps, FormState> 
     };
   }
 
-  private handleChange = (event: any) => this.setState({ [event.target.id]: event.target.value });
-  private handleSelect = (event?: any) => 
-    this.setState({ supervisor: event.target.value })
+  private handleChange = (event: any) => this.setState({ [event.target.name]: event.target.value });
 
   private isButtonEnabled = () => 
     (this.state.firstName.length > 0)
@@ -106,21 +102,21 @@ export default class UserForm extends React.Component<UserFormProps, FormState> 
       <div>
         <form>
           <TextField 
-            id="firstName" 
+            name="firstName" 
             type="text"
             label="First name"
             value={this.state.firstName}
             onChange={this.handleChange}/>
           <br /><br />
           <TextField 
-            id="lastName" 
+            name="lastName" 
             type="text"
             label="Last name"
             value={this.state.lastName}
             onChange={this.handleChange}/>
           <br /><br />
           <TextField
-            id="age"
+            name="age"
             type="number"
             label="Age"
             inputProps={{ min: '1', max: '120', step: '1' }}
@@ -130,9 +126,9 @@ export default class UserForm extends React.Component<UserFormProps, FormState> 
           <br /><br />
           <FormControl>
           <Select
-            id="supervisor"
+            name="supervisor"
             value={this.state.supervisor}
-            onChange={this.handleSelect}>
+            onChange={this.handleChange}>
             {supervisorsList}
           </Select>
           </FormControl>

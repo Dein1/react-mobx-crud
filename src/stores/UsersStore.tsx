@@ -40,7 +40,7 @@ export default class UsersStore {
     this.users[index] = updatedUser;
   }
 
-  public findByIndex(position: number) {
+  public findByPosition(position: number) {
     const user = this.users[position - 1];
     return user;
   }
