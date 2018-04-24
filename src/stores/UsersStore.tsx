@@ -1,15 +1,5 @@
 import { observable, action } from 'mobx';
-
-interface User {
-  guid: string;
-  age: number;
-  name: {
-    first: string,
-    last: string,
-  };
-  email: string;
-  supervisorGuid?: string;
-}
+import { User } from './UserInterface';
 
 export default class UsersStore {
   @observable public users: User[];

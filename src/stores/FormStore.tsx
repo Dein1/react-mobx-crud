@@ -1,15 +1,5 @@
 import { observable } from 'mobx';
-
-interface User {
-  guid: string;
-  age: number;
-  name: {
-    first: string,
-    last: string,
-  };
-  email: string;
-  supervisorGuid?: string;
-}
+import { User } from './UserInterface';
 
 export default class FormStore {
   @observable public user: User;
