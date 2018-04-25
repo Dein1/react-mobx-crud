@@ -15,4 +15,9 @@ export default class FormStore {
     this.age = this.user.age;
     this.supervisor = this.user.supervisorGuid || '';
   }
+
+  public isValid = () => 
+  (this.firstName.length > 0)
+  && (this.lastName.length > 0) 
+  && (this.age < 121 && this.age > 0)
 }

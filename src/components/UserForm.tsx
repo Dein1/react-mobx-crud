@@ -72,11 +72,6 @@ export default class UserForm extends React.Component<UserFormProps, {}> {
     );
   })
 
-  public isButtonEnabled = () => 
-    (this.form.firstName.length > 0)
-    && (this.form.lastName.length > 0) 
-    && (this.form.age < 121 && this.form.age > 0)
-
   private rootLink = (props: any) => <Link to="/" {...props}/>;
 
   private handleChange = (event: any) => this.form[event.target.name] = event.target.value;
@@ -127,7 +122,7 @@ export default class UserForm extends React.Component<UserFormProps, {}> {
           <Button 
             variant="raised"
             color="primary" 
-            disabled={!this.isButtonEnabled()}
+            disabled={!this.form.isValid()}
             component={this.rootLink}
             onClick={this.save}>
               save
