@@ -12,9 +12,9 @@ export default class UsersStore {
     const userToDelete = this.users.find(el => el.guid === guid);
     const index = this.users.indexOf(userToDelete);
     this.users.splice(index, 1);
-    this.users.map((el) => {
+    this.users.forEach((el) => {
       if (el.supervisorGuid && el.supervisorGuid === guid) {
-        delete el.supervisorGuid;
+        el.supervisorGuid = '';
       }
     });
   }

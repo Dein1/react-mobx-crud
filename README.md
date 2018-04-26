@@ -1,5 +1,4 @@
-# Frontend CRUD with React, MobX & TypeScript
-Megaplan test assignment
+# CRUD with React, MobX & TypeScript
 
 ## Setup
 
